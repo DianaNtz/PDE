@@ -30,4 +30,28 @@ def Cheb_grid_and_D(xmin,xmax,Nx):
 
      Dx=Dx/cx
      return x,Dx,np.dot(Dx,Dx)
+#Initial values
+Nx=30
+Ny=40
 
+xmin=0
+xmax=1.0
+
+ymax=1.0
+ymin=0.0
+
+
+y,Dy,D2y=Cheb_grid_and_D(ymin,ymax,Ny)
+x,Dx,D2x=Cheb_grid_and_D(xmin,xmax,Nx)
+
+d2x=np.kron(np.identity((Ny)),D2x)
+d2y=np.kron(D2y,np.identity((Nx)))
+
+f=np.zeros(Ny*Nx)
+
+
+for j in range(0,Ny):
+          for i in range(0,Nx):
+                  f[i+j*Nx]=-2*np.pi**2*np.sin(np.pi*y[j])*np.sin(np.pi*x[i])
+#create Laplace operator
+L=d2y+d2x
