@@ -55,3 +55,26 @@ for j in range(0,Ny):
                   f[i+j*Nx]=-2*np.pi**2*np.sin(np.pi*y[j])*np.sin(np.pi*x[i])
 #create Laplace operator
 L=d2y+d2x
+#setting boundaries
+bound=np.kron(np.identity((Ny)),np.identity((Nx)))
+b=f
+for j in range(0,Ny):
+        for i in range(0,Nx):
+            if(i==0):
+               b[i+j*Nx]=0
+            if(i==Nx-1):
+               b[i+j*Nx]=0
+            if(j==Ny-1):
+               b[i+j*Nx]=0
+            if(j==0):
+               b[i+j*Nx]=0
+
+
+
+for k in range(0,Ny*Nx):
+        if(k%Nx==0):
+           #z bei 0
+           L[k]=bound[k]
+        if(k=Ny*Nx-Nx):
+           L[k]=bound[k]
+           #rho bei Nrho
