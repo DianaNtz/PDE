@@ -69,12 +69,40 @@ for j in range(0,Ny):
             if(j==0):
                b[i+j*Nx]=0
 
-
-
 for k in range(0,Ny*Nx):
         if(k%Nx==0):
            #z bei 0
            L[k]=bound[k]
-        if(k=Ny*Nx-Nx):
+        if(k<Nx ):
+           L[k]=bound[k]
+           #rho bei 0
+        if(k%Nx==Nx-1):
+           L[k]=bound[k]
+           #z bei Nz
+        if(k>=Ny*Nx-Nx):
            L[k]=bound[k]
            #rho bei Nrho
+#solve linear system
+solution=np.linalg.solve(L,b)
+print(np.linalg.matrix_rank(L,tol=0.000000000000001))
+print(Ny*Nx)
+
+so=solution.reshape(Ny,Nx)
+
+#plotting results
+xx,yy= np.meshgrid(x, y)
+fig = plt.figure(figsize=(14,12))
+axx = plt.axes(projection='3d')
+axx.plot_surface(xx, yy, so,cmap=cm.inferno,antialiased=False)
+axx.view_init(azim=240,elev=25)
+axx.set_xlabel('x', labelpad=30,fontsize=34)
+axx.set_ylabel("y",labelpad=30,fontsize=34)
+axx.zaxis.set_tick_params(labelsize=21,pad=18)
+axx.yaxis.set_tick_params(labelsize=21)
+axx.xaxis.set_tick_params(labelsize=21)
+fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
+filename ="PDE.png"
+plt.savefig(filename,dpi=50)
+plt.show()
+
+
